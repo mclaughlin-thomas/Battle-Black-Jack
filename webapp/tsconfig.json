@@ -1,0 +1,11 @@
+// "This configuration file extends the one provided by the TypeScript developers
+// for working with Node.js. The TypeScript files will be created in the src
+// folder, and the compiled JavaScript will be written to the dist folder."
+
+{
+    "extends": "@tsconfig/node20/tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+    }
+}
