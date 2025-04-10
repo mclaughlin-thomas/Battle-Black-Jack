@@ -19,18 +19,60 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .nav-link {
+            color: white !important;
+        }
     </style>
 </head>
 
 <body>
-    <div class="content">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Black Jack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="content mt-4">
         <h1>Totally Fair & Regulated Black Jack</h1>
-        <button id="btn" class="btn btn-primary my-3">Start</button>
+        <button id="btn" class="btn btn-primary my-3">Send Request</button>
         <div id="msg"></div>
         <div id="body"></div>
+        <img src="city.png" style="width: 100%; max-width: 500px; margin-top: 20px;" alt="City">
     </div>
 
-    <img src="city.png" style="width: 100%; display: block; margin-bottom: 2px;">
-</body>
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Totally Fair & Regulated Black Jack</p>
+        </div>
+    </footer>
 
+    <!-- Bootstrap JS bundle (if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>
