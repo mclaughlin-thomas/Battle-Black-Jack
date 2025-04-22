@@ -36,8 +36,12 @@ function updateGame(data) {
         ${data.status === "playing" ? `
             <button onclick="hit()" class="btn btn-primary">Hit</button>
             <button onclick="stand()" class="btn btn-secondary">Stand</button>
-        ` : `<h2>${data.result}</h2>`}
+        ` : `
+            <h2>${data.result}</h2>
+            <button onclick="startGame()" class="btn btn-success mt-3">Play Again</button>
+        `}
     `;
 }
+
 
 window.onload = startGame;
