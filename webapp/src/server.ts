@@ -1,6 +1,7 @@
 import { createServer } from "http";
 import express, {Express, Request, Response } from "express";
 import { readHandler } from "./readHandler";
+import { blackjackStart, blackjackHit, blackjackStand } from "./blackjackHandler";
 
 const port = 5000;
 const expressApp: Express = express();
@@ -11,6 +12,9 @@ expressApp.post("/read", readHandler);
 expressApp.get("/sendcity", (req, resp) => {
     resp.sendFile("city.png", { root: "static"});
 });
+expressApp.post("/blackjack/start", blackjackStart);
+expressApp.post("/blackjack/hit", blackjackHit);
+expressApp.post("/blackjack/stand", blackjackStand);
 expressApp.get("/downloadcity", (req: Request, resp: Response) => {
     resp.download("static/city.png");
 });
