@@ -66,7 +66,7 @@ export const blackjackHit = (req: Request, res: Response) => {
     const score = calculateScore(game.player);
     if (score > 21) {
         game.status = "lost";
-        return res.json({ ...game, result: "Player busts! Dealer wins." });
+        return res.json({ ...game, result: "You busted! Dealer wins! The House Will Always Wins In The End!" });
     }
 
     res.json(game);
