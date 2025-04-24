@@ -7,8 +7,8 @@ const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
 const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 
 type Card = {
-    suit: string,
-    value: string,
+    suit: string;
+    value: string;
 };
 
 type GameState = {
@@ -41,6 +41,14 @@ function shuffleDeck(deck: Card[]): Card[] {
     return deck;
 }
 
+function printDeck(deck: Card[]): void {
+    var dummyCard: Card;
+    for (let i = 0; i < deck.length; i++) {
+        dummyCard = deck[i];
+        console.log(dummyCard.suit, dummyCard.value);
+    }
+}
+
 function getCardValue(card: Card): number {
     if (["J", "Q", "K"].includes(card.value)) return 10;
     if (card.value === "A") return 11;
@@ -57,7 +65,14 @@ function calculateScore(hand: Card[]): number {
     return score;
 }
 
-// blackjackStart: Initializes a new game
+function cardToString(card: Card): string {
+    return `${card.value} of ${card.suit}`;
+}
+
+function handToString(hand: Card[]): string[] {
+    return hand.map(cardToString);
+}
+
 export const blackjackStart = (req: Request, res: Response) => {
     const deck = shuffleDeck(createDeck());
     const player = [deck.pop()!, deck.pop()!];
@@ -66,14 +81,20 @@ export const blackjackStart = (req: Request, res: Response) => {
     const gameId = randomUUID();
     gameSessions.set(gameId, { deck, player, dealer, status: "playing" });
 
-    res.json({ gameId, player, dealer, status: "playing" });
+    res.json({
+        gameId,
+        player: handToString(player),
+        dealer: handToString(dealer),
+        status: "playing"
+    });
 };
 
-// blackjackHit: Player draws a card
 export const blackjackHit = (req: Request, res: Response) => {
     const { gameId } = req.body;
     const game = gameSessions.get(gameId);
-    if (!game || game.status !== "playing") return res.status(400).json({ error: "Invalid game" });
+    if (!game || game.status !== "playing") {
+        return res.status(400).json({ error: "Invalid game" });
+    }
 
     const newCard = game.deck.pop()!;
     game.player.push(newCard);
@@ -81,17 +102,29 @@ export const blackjackHit = (req: Request, res: Response) => {
     const score = calculateScore(game.player);
     if (score > 21) {
         game.status = "lost";
-        return res.json({ ...game, result: "You busted! Dealer wins! The House Will Always Wins In The End!" });
+        return res.json({
+            gameId,
+            player: handToString(game.player),
+            dealer: handToString(game.dealer),
+            status: game.status,
+            result: "You busted! Dealer wins! The House Will Always Wins In The End!"
+        });
     }
 
-    res.json(game);
+    res.json({
+        gameId,
+        player: handToString(game.player),
+        dealer: handToString(game.dealer),
+        status: game.status
+    });
 };
 
-// blackjackStand: Player stands, dealer draws
 export const blackjackStand = (req: Request, res: Response) => {
     const { gameId } = req.body;
     const game = gameSessions.get(gameId);
-    if (!game || game.status !== "playing") return res.status(400).json({ error: "Invalid game" });
+    if (!game || game.status !== "playing") {
+        return res.status(400).json({ error: "Invalid game" });
+    }
 
     while (calculateScore(game.dealer) < 17) {
         const newCard = game.deck.pop()!;
@@ -101,14 +134,23 @@ export const blackjackStand = (req: Request, res: Response) => {
     const playerScore = calculateScore(game.player);
     const dealerScore = calculateScore(game.dealer);
 
+    let result: string;
     if (dealerScore > 21 || playerScore > dealerScore) {
         game.status = "won";
-        res.json({ ...game, result: "You win!" });
+        result = "You win!";
     } else if (playerScore < dealerScore) {
         game.status = "lost";
-        res.json({ ...game, result: "Dealer wins!" });
+        result = "Dealer wins!";
     } else {
         game.status = "Push";
-        res.json({ ...game, result: "It's a Push!" });
+        result = "It's a Push!";
     }
+
+    res.json({
+        gameId,
+        player: handToString(game.player),
+        dealer: handToString(game.dealer),
+        status: game.status,
+        result
+    });
 };
