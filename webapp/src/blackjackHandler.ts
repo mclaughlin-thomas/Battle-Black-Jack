@@ -1,23 +1,39 @@
-// blackjackHandler.ts
+// blackjackHandlerNew.ts
 
 import { Request, Response } from "express";
 import { randomUUID } from "crypto";
 
-type Card = string;
+const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+
+type Card = {
+    suit: string,
+    value: string,
+};
+
 type GameState = {
+    deck: Card[];
     player: Card[];
     dealer: Card[];
     status: string;
 };
 
-const suits = ["♠", "♥", "♦", "♣"];
-const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+const gameSessions = new Map<string, GameState>();
 
 function createDeck(): Card[] {
-    return suits.flatMap(suit => values.map(value => `${value}${suit}`));
+    const deck: Card[] = [];
+    for (let i = 0; i < suits.length; i++) {
+        for (let j = 0; j < values.length; j++) {
+            deck.push({
+                suit: suits[i],
+                value: values[j],
+            });
+        }
+    }
+    return deck;
 }
 
-function shuffle(deck: Card[]): Card[] {
+function shuffleDeck(deck: Card[]): Card[] {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -26,15 +42,14 @@ function shuffle(deck: Card[]): Card[] {
 }
 
 function getCardValue(card: Card): number {
-    const value = card.slice(0, -1);
-    if (["J", "Q", "K"].includes(value)) return 10;
-    if (value === "A") return 11; // simplified, we’ll handle A=1 logic later
-    return parseInt(value);
+    if (["J", "Q", "K"].includes(card.value)) return 10;
+    if (card.value === "A") return 11;
+    return parseInt(card.value);
 }
 
 function calculateScore(hand: Card[]): number {
     let score = hand.reduce((sum, card) => sum + getCardValue(card), 0);
-    let aces = hand.filter(card => card.startsWith("A")).length;
+    let aces = hand.filter(card => card.value === "A").length;
     while (score > 21 && aces > 0) {
         score -= 10;
         aces--;
@@ -42,25 +57,25 @@ function calculateScore(hand: Card[]): number {
     return score;
 }
 
-const gameSessions = new Map<string, GameState>();
-
+// blackjackStart: Initializes a new game
 export const blackjackStart = (req: Request, res: Response) => {
-    const deck = shuffle(createDeck());
+    const deck = shuffleDeck(createDeck());
     const player = [deck.pop()!, deck.pop()!];
     const dealer = [deck.pop()!];
 
     const gameId = randomUUID();
-    gameSessions.set(gameId, { player, dealer, status: "playing" });
+    gameSessions.set(gameId, { deck, player, dealer, status: "playing" });
 
     res.json({ gameId, player, dealer, status: "playing" });
 };
 
+// blackjackHit: Player draws a card
 export const blackjackHit = (req: Request, res: Response) => {
     const { gameId } = req.body;
     const game = gameSessions.get(gameId);
     if (!game || game.status !== "playing") return res.status(400).json({ error: "Invalid game" });
 
-    const newCard = createDeck().sort(() => 0.5 - Math.random())[0]; // simulate draw
+    const newCard = game.deck.pop()!;
     game.player.push(newCard);
 
     const score = calculateScore(game.player);
@@ -72,13 +87,14 @@ export const blackjackHit = (req: Request, res: Response) => {
     res.json(game);
 };
 
+// blackjackStand: Player stands, dealer draws
 export const blackjackStand = (req: Request, res: Response) => {
     const { gameId } = req.body;
     const game = gameSessions.get(gameId);
     if (!game || game.status !== "playing") return res.status(400).json({ error: "Invalid game" });
 
     while (calculateScore(game.dealer) < 17) {
-        const newCard = createDeck().sort(() => 0.5 - Math.random())[0];
+        const newCard = game.deck.pop()!;
         game.dealer.push(newCard);
     }
 
