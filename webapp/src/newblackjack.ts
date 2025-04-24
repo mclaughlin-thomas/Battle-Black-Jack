@@ -4,24 +4,52 @@ import { randomUUID } from "crypto";
 const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 
-let card = {
-    suit: suits,
-    value: values,
+type Card = {
+    suit: string,
+    value: string,
 }
 
 
-function createDeck(): card[] {
+function createDeck(): Card[] {
+    const deck: Card[] = []; //make it empty
+
+    for (let i=0; i< suits.length; i++ ){
+        for (let j=0; j< values.length; j++ ){
+            deck.push(
+                {
+                    suit: suits[i],
+                    value: values[j],
+                }
+            )
+        }
+    }
+
+    return deck;
+}
+
+function printDeck(deck: Card[]):  void{
+    var dummyCard:Card;
+    for (let i = 0; i < deck.length; i++ ){
+        dummyCard = deck[i];
+        console.log(dummyCard.suit, dummyCard.value);
+    }
+}
+
+function shuffleDeck(deck: Card[]):  Card[]{
+    const newDeck: Card[] = [];
+
     
+    return newDeck;
 }
 
 
-export const blackjackStart = (req: Request, res: Response) => {
-    const deck = createDeck();
-    // const player = [deck.pop()!, deck.pop()!];
-    // const dealer = [deck.pop()!];
+var deck = createDeck();
+printDeck(deck);
+console.log("------------");
+deck = shuffleDeck(deck);
 
-    // const gameId = randomUUID();
-    // gameSessions.set(gameId, { player, dealer, status: "playing" });
+// export const blackjackStart = (req: Request, res: Response) => {
+//     const deck = createDeck();
+//     printDeck(deck);
 
-    // res.json({ gameId, player, dealer, status: "playing" });
-};
+// };
