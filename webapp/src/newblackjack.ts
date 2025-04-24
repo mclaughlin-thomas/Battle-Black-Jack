@@ -36,10 +36,11 @@ function printDeck(deck: Card[]):  void{
 }
 
 function shuffleDeck(deck: Card[]):  Card[]{
-    const newDeck: Card[] = [];
-
-    
-    return newDeck;
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
 }
 
 
@@ -47,6 +48,8 @@ var deck = createDeck();
 printDeck(deck);
 console.log("------------");
 deck = shuffleDeck(deck);
+printDeck(deck);
+
 
 // export const blackjackStart = (req: Request, res: Response) => {
 //     const deck = createDeck();
