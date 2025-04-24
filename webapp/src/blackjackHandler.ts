@@ -92,7 +92,7 @@ export const blackjackStand = (req: Request, res: Response) => {
         game.status = "lost";
         res.json({ ...game, result: "Dealer wins!" });
     } else {
-        game.status = "draw";
-        res.json({ ...game, result: "It's a draw!" });
+        game.status = "Push";
+        res.json({ ...game, result: "It's a Push!" });
     }
 };
