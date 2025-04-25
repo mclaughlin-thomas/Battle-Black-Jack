@@ -66,7 +66,7 @@ function calculateScore(hand: Card[]): number {
 }
 
 function cardToString(card: Card): string {
-    return `${card.value} of ${card.suit}`;
+    return `${card.value} `;
 }
 
 function handToString(hand: Card[]): string[] {

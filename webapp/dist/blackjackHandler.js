@@ -49,7 +49,7 @@ function calculateScore(hand) {
     return score;
 }
 function cardToString(card) {
-    return `${card.value} of ${card.suit}`;
+    return `${card.value} `;
 }
 function handToString(hand) {
     return hand.map(cardToString);
