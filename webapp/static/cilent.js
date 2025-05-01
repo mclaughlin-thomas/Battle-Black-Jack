@@ -30,18 +30,37 @@ async function stand() {
 
 function updateGame(data) {
     const body = document.getElementById("body");
+
+    // Helper to render card images
+    function renderCards(cards) {
+        return cards.map(value => {
+            // Trim and remove any spaces just in case
+            value = value.trim();
+            return `<img src="/static/cards/${value}.jpg" alt="${value}" style="width:80px; margin:5px;">`;
+        }).join("");
+    }
+
     body.innerHTML = `
-        <p>Your Cards: ${data.player.join(", ")}</p>
-        <p>Dealer Cards: ${data.dealer.join(", ")}</p>
-        ${data.status === "playing" ? `
-            <button onclick="hit()" class="btn btn-primary">Hit</button>
-            <button onclick="stand()" class="btn btn-secondary">Stand</button>
-        ` : `
-            <h2>${data.result}</h2>
-            <button onclick="startGame()" class="btn btn-success mt-3">Play Again</button>
-        `}
+        <div>
+            <h3>Your Cards:</h3>
+            ${renderCards(data.player)}
+        </div>
+        <div class="mt-3">
+            <h3>Dealer Cards:</h3>
+            ${renderCards(data.dealer)}
+        </div>
+        <div class="mt-4">
+            ${data.status === "playing" ? `
+                <button onclick="hit()" class="btn btn-primary">Hit</button>
+                <button onclick="stand()" class="btn btn-secondary">Stand</button>
+            ` : `
+                <h2>${data.result}</h2>
+                <button onclick="startGame()" class="btn btn-success mt-3">Play Again</button>
+            `}
+        </div>
     `;
 }
+
 
 
 window.onload = startGame;
