@@ -31,7 +31,7 @@ async function stand() {
 function updateGame(data) {
     const body = document.getElementById("body");
     body.innerHTML = `
-        <p>Player Cards: ${data.player.join(", ")}</p>
+        <p>Your Cards: ${data.player.join(", ")}</p>
         <p>Dealer Cards: ${data.dealer.join(", ")}</p>
         ${data.status === "playing" ? `
             <button onclick="hit()" class="btn btn-primary">Hit</button>
