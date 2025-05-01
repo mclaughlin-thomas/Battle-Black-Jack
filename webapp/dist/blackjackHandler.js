@@ -84,7 +84,7 @@ const blackjackHit = (req, res) => {
             player: handToString(game.player),
             dealer: handToString(game.dealer),
             status: game.status,
-            result: "You busted! Dealer wins! The House Will Always Wins In The End!"
+            result: "You busted! Dealer wins!"
         });
     }
     res.json({

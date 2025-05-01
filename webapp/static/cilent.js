@@ -36,7 +36,7 @@ function updateGame(data) {
         return cards.map(value => {
             // Trim and remove any spaces just in case
             value = value.trim();
-            return `<img src="/static/cards/${value}.jpg" alt="${value}" style="width:80px; margin:5px;">`;
+            return `<img src="cards/${value}.jpg" alt="${value}" style="width:80px; margin:5px;">`;
         }).join("");
     }
 
