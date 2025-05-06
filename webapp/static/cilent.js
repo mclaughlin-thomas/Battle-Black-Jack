@@ -31,10 +31,10 @@ async function stand() {
 function updateGame(data) {
     const body = document.getElementById("body");
 
-    // Helper to render card images
+    // Helper to pull card images
     function renderCards(cards) {
         return cards.map(value => {
-            // Trim and remove any spaces just in case
+            // Trim and remove any spaces
             value = value.trim();
             return `<img src="cards/${value}.jpg" alt="${value}" style="width:80px; margin:5px;">`;
         }).join("");

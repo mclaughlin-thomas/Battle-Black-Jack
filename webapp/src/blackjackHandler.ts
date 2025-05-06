@@ -80,6 +80,7 @@ export const blackjackStart = (req: Request, res: Response) => {
     const dealer = [deck.pop()!];
 
     const gameId = randomUUID();
+    console.log("game id:" + gameId);
     gameSessions.set(gameId, { deck, player, dealer, status: "playing" });
 
     res.json({
@@ -91,7 +92,7 @@ export const blackjackStart = (req: Request, res: Response) => {
 };
 
 export const blackjackHit = (req: Request, res: Response) => {
-    const { gameId } = req.body;
+    const gameId = req.body.gameId;
     const game = gameSessions.get(gameId);
     if (!game || game.status !== "playing") {
         return res.status(400).json({ error: "Invalid game" });
@@ -121,7 +122,7 @@ export const blackjackHit = (req: Request, res: Response) => {
 };
 
 export const blackjackStand = (req: Request, res: Response) => {
-    const { gameId } = req.body;
+    const gameId = req.body.gameId;
     const game = gameSessions.get(gameId);
     if (!game || game.status !== "playing") {
         return res.status(400).json({ error: "Invalid game" });
