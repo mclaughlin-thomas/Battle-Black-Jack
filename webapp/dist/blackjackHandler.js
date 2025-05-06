@@ -89,7 +89,7 @@ const blackjackHit = (req, res) => {
             result: "You busted! Dealer wins!"
         });
     }
-    res.json({
+    return res.json({
         gameId,
         player: handToString(game.player),
         dealer: handToString(game.dealer),
@@ -103,6 +103,7 @@ const blackjackStand = (req, res) => {
     if (!game || game.status !== "playing") {
         return res.status(400).json({ error: "Invalid game" });
     }
+    // stand on soft 17!
     while (calculateScore(game.dealer) < 17) {
         const newCard = game.deck.pop();
         game.dealer.push(newCard);
@@ -112,17 +113,17 @@ const blackjackStand = (req, res) => {
     let result;
     if (dealerScore > 21 || playerScore > dealerScore) {
         game.status = "won";
-        result = "You win!";
+        result = "You win!"; // will be displayed on htmnl
     }
     else if (playerScore < dealerScore) {
         game.status = "lost";
-        result = "Dealer wins!";
+        result = "Dealer wins!"; // will be displayed on htmnl
     }
     else {
         game.status = "Push";
-        result = "It's a Push!";
+        result = "It's a Push!"; // will be displayed on htmnl
     }
-    res.json({
+    return res.json({
         gameId,
         player: handToString(game.player),
         dealer: handToString(game.dealer),
