@@ -109,7 +109,7 @@ export const blackjackHit = (req: Request, res: Response) => {
             player: handToString(game.player),
             dealer: handToString(game.dealer),
             status: game.status,
-            result: "You busted! Dealer wins!"
+            result: "You busted! Dealer wins!" // will be displayed on htmnl
         });
     }
 
