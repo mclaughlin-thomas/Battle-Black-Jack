@@ -1,6 +1,5 @@
 import { createServer } from "http";
 import express, {Express, Request, Response } from "express";
-import { readHandler } from "./readHandler";
 import { blackjackStart, blackjackHit, blackjackStand } from "./blackjackHandler";
 
 const port = 5000;
@@ -18,11 +17,16 @@ expressApp.post("/blackjack/stand", blackjackStand);
 expressApp.use(express.static("static"));
 // the middleware component will attempt to match request URLs
 // to files in the static directory
+// games.html, game.html, index.html, etc.
 
 expressApp.use(express.static("static/cards"));
+// adding another middleware component for subdirectory
 
 expressApp.use(express.static("node_modules/bootstrap/dist"));
+//middleware for bootstrap referenced in html
+
 //MIDDLEWARE ABOVE
+
 const server = createServer(expressApp);
 
 server.listen(port,() =>

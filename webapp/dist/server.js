@@ -17,8 +17,11 @@ expressApp.post("/blackjack/stand", blackjackHandler_1.blackjackStand);
 expressApp.use(express_1.default.static("static"));
 // the middleware component will attempt to match request URLs
 // to files in the static directory
+// games.html, game.html, index.html, etc.
 expressApp.use(express_1.default.static("static/cards"));
+// adding another middleware component for subdirectory
 expressApp.use(express_1.default.static("node_modules/bootstrap/dist"));
+//middleware for bootstrap referenced in html
 //MIDDLEWARE ABOVE
 const server = (0, http_1.createServer)(expressApp);
 server.listen(port, () => console.log(`HTTP Server listening on port ${port}`));
