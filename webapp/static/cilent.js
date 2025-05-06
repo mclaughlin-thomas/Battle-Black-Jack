@@ -29,6 +29,9 @@ async function stand() {
 }
 
 function updateGame(data) {
+    // https://www.geeksforgeeks.org/javascript-innerhtml/#
+    // https://www.w3schools.com/js/js_htmldom_html.asp
+    
     const body = document.getElementById("body");
 
     // Helper to pull card images
