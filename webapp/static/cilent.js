@@ -62,5 +62,5 @@ function updateGame(data) {
 }
 
 
-
+// https://stackoverflow.com/questions/588040/window-onload-vs-document-onload
 window.onload = startGame;
